@@ -3,10 +3,11 @@ package com.fantasy.abstraction.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Entity
 @Table(name = "USER_")
@@ -21,6 +22,4 @@ public class User implements Serializable {
     private String locale;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastVisit;
-    @OneToMany
-    private Set<QrInfo> qrInfos;
 }
