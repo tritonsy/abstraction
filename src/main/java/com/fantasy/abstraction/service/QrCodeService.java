@@ -7,5 +7,5 @@ import java.io.File;
 import java.io.IOException;
 
 public interface QrCodeService {
-    String decodeQRCode (File file) throws FormatException, ChecksumException, IOException;
+    String decodeQRCode(File file) throws FormatException, ChecksumException, IOException;
 }

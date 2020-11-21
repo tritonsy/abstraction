@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -20,7 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.antMatcher("/**")
                 .authorizeRequests()
-                .antMatchers("/", "/login**", "/js/**", "/error**").permitAll()
+                .antMatchers("/", "/login**", "/static/favicon.ico", "/js/**", "/error**").permitAll()
                 .anyRequest().authenticated()
                 .and().logout().logoutSuccessUrl("/").permitAll()
                 .and()
@@ -31,23 +32,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PrincipalExtractor principalExtractor(UserRepository userRepository) {
         return map -> {
             String id = (String) map.get("sub");
-
-            User user = userRepository.findById(id).orElseGet(() -> {
-                User newUser = new User();
-
-                newUser.setId(id);
-                newUser.setName((String) map.get("name"));
-                newUser.setEmail((String) map.get("email"));
-                newUser.setGender((String) map.get("gender"));
-                newUser.setLocale((String) map.get("locale"));
-                newUser.setUserpic((String) map.get("picture"));
-
-                return newUser;
-            });
-
+            User user = userRepository.findById(id).orElseGet(() -> createUser(map, id));
             user.setLastVisit(LocalDateTime.now());
-
             return userRepository.save(user);
         };
+    }
+
+    private User createUser(Map<String, Object> map, String id) {
+        User newUser = new User();
+        newUser.setId(id);
+        newUser.setName((String) map.get("name"));
+        newUser.setEmail((String) map.get("email"));
+        newUser.setGender((String) map.get("gender"));
+        newUser.setLocale((String) map.get("locale"));
+        newUser.setUserpic((String) map.get("picture"));
+        return newUser;
     }
 }

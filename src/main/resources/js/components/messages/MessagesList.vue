@@ -11,8 +11,8 @@
 </template>
 <script>
     import {mapGetters} from 'vuex'
-    import MessageRow from "components/messages/MessageRow.vue"
-    import MessageForm from "components/messages/MessageForm.vue"
+    import MessageRow from "./MessageRow.vue";
+    import MessageForm from "./MessageForm.vue";
     import messagesApi from "../../api/messages";
 
     export default {
